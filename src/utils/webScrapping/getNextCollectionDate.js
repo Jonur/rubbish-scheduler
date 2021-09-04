@@ -1,4 +1,5 @@
 const dayjs = require("dayjs");
+const { MONTHS } = require("../../constants");
 
 const currentYear = dayjs().year();
 
@@ -14,8 +15,13 @@ const getNextCollectionDate = (nextCollection) => {
     nextCollectionDay <= 31 &&
     !(nextCollectionMonth === "February" && nextCollectionDay > 29);
 
+  const currentMonth = MONTHS.indexOf(dayjs().locale("en").format("MMMM"));
+  const resultMonth = MONTHS.indexOf(nextCollectionMonth);
+  const isNextYear = resultMonth < currentMonth;
+  const nextCollectionYear = isNextYear ? currentYear + 1 : currentYear;
+
   return isValidDay
-    ? `${nextCollectionDay} ${nextCollectionMonth} ${currentYear}`
+    ? `${nextCollectionDay} ${nextCollectionMonth} ${nextCollectionYear}`
     : "";
 };
 

@@ -13,7 +13,11 @@ const { SOURCE_WEBSITE } = require("./src/constants");
 
   const data = await page.evaluate(async () => {
     const wasteTitles = [...document.querySelectorAll(".waste-service-name")];
-    const wasteDetails = document.querySelectorAll(".waste-service-name + div");
+    const wasteDetails = [
+      ...document.querySelectorAll(".waste-service-name + div"),
+    ];
+
+    console.log(wasteTitles.length, wasteDetails.length);
 
     const wasteData = [];
     for (let i = 0; i < wasteTitles.length; i++) {
