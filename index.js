@@ -11,15 +11,13 @@ const { SOURCE_WEBSITE } = require("./src/constants");
 
   await page.goto(SOURCE_WEBSITE, { waitUntil: "networkidle2" });
 
-  const data = await page.evaluate(async () => {
+  const wasteCollectionsData = await page.evaluate(async () => {
     const wasteTitles = [...document.querySelectorAll(".waste-service-name")];
     const wasteDetails = [
       ...document.querySelectorAll(".waste-service-name + div"),
     ];
 
-    console.log(wasteTitles.length, wasteDetails.length);
-
-    const wasteData = [];
+    const wasteCollections = [];
     for (let i = 0; i < wasteTitles.length; i++) {
       const wasteType = wasteTitles[i].innerText;
 
@@ -35,16 +33,16 @@ const { SOURCE_WEBSITE } = require("./src/constants");
 
       if (!nextCollectionDate) continue;
 
-      wasteData.push({
+      wasteCollections.push({
         title: wasteType,
         nextCollectionDate,
       });
     }
 
-    return wasteData;
+    return wasteCollections;
   });
 
-  console.log(data);
+  console.log(wasteCollectionsData);
 
   await browser.close();
 })();
