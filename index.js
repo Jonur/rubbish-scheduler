@@ -1,48 +1,22 @@
-const puppeteer = require("puppeteer");
-const { exposeFunctions } = require("./src/utils");
-const { SOURCE_WEBSITE } = require("./src/constants");
+const { google } = require('googleapis');
+
+const {
+  createCalendarEvents,
+  getExistingCalendarEvents,
+  getOAuth2Client,
+  getWasteCollectionsData,
+  updateCalendarWithEvents,
+} = require('./src/utils');
 
 (async () => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
+  const oauth2Client = getOAuth2Client();
+  const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
 
-  page.on("console", (msg) => console.log(msg.text()));
-  await exposeFunctions(page);
+  const wasteCollectionsData = await getWasteCollectionsData();
 
-  await page.goto(SOURCE_WEBSITE, { waitUntil: "networkidle2" });
+  const calendarEvents = createCalendarEvents(wasteCollectionsData);
 
-  const wasteCollectionsData = await page.evaluate(async () => {
-    const wasteTitles = [...document.querySelectorAll(".waste-service-name")];
-    const wasteDetails = [
-      ...document.querySelectorAll(".waste-service-name + div"),
-    ];
+  const existingCalendarEvents = await getExistingCalendarEvents(calendar, calendarEvents);
 
-    const wasteCollections = [];
-    for (let i = 0; i < wasteTitles.length; i++) {
-      const wasteType = wasteTitles[i].innerText;
-
-      const nextCollectionDetails = await window.getNextWasteCollectionDetails(
-        wasteDetails[i].innerText
-      );
-
-      if (!nextCollectionDetails) continue;
-
-      const nextCollectionDate = await window.getNextCollectionDate(
-        nextCollectionDetails
-      );
-
-      if (!nextCollectionDate) continue;
-
-      wasteCollections.push({
-        title: wasteType,
-        nextCollectionDate,
-      });
-    }
-
-    return wasteCollections;
-  });
-
-  console.log(wasteCollectionsData);
-
-  await browser.close();
+  updateCalendarWithEvents(calendar, oauth2Client, calendarEvents, existingCalendarEvents);
 })();

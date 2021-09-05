@@ -19,6 +19,13 @@
   "homepage": "https://github.com/Jonur/rubbish-scheduler#readme",
   "dependencies": {
     "dayjs": "^1.10.6",
+    "dotenv": "^10.0.0",
+    "googleapis": "^85.0.0",
     "puppeteer": "^10.2.0"
+  },
+  "engines": {
+    "node": ">=15.14.0",
+    "npm": ">=7.20.5",
+    "yarn": ">=1.22.10"
   }
 }
