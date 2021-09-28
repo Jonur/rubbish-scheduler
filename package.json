@@ -4,28 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Jonur/rubbish-scheduler.git"
   },
-  "author": "",
+  "author": "Dimitris Damilos<d.k.damilos@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Jonur/rubbish-scheduler/issues"
   },
   "homepage": "https://github.com/Jonur/rubbish-scheduler#readme",
   "dependencies": {
-    "dayjs": "^1.10.6",
+    "dayjs": "^1.10.7",
     "dotenv": "^10.0.0",
-    "googleapis": "^85.0.0",
-    "puppeteer": "^10.2.0"
+    "googleapis": "^87.0.0",
+    "puppeteer": "^10.4.0"
   },
   "engines": {
-    "node": ">=15.14.0",
-    "npm": ">=7.20.5",
-    "yarn": ">=1.22.10"
+    "node": ">=16.10.0",
+    "npm": ">=7.24.1",
+    "yarn": ">=1.22.11"
   }
 }
