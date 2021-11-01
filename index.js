@@ -2,11 +2,12 @@ const { google } = require('googleapis');
 
 const {
   createCalendarEvents,
+  deleteExistingCalendarEvents,
   getExistingCalendarEvents,
   getOAuth2Client,
   getShouldBeUsingMocks,
   getWasteCollectionsData,
-  updateCalendarWithEvents,
+  insertEventsIntoCalendar,
 } = require('./src/utils');
 
 (async () => {
@@ -19,5 +20,7 @@ const {
 
   const existingCalendarEvents = await getExistingCalendarEvents(calendar, calendarEvents);
 
-  updateCalendarWithEvents(calendar, oauth2Client, calendarEvents, existingCalendarEvents);
+  await deleteExistingCalendarEvents(calendar, oauth2Client, existingCalendarEvents);
+
+  insertEventsIntoCalendar(calendar, oauth2Client, calendarEvents);
 })();
