@@ -5,10 +5,10 @@ const { USER_PREFERENCES, DATETIME_OPTIONS } = require('../../constants');
 const updateCalendarWithEvents = (calendar, oauth2Client, calendarEvents, existingCalendarEvents) => {
   calendarEvents.forEach((event) => {
     const eventExists = !!existingCalendarEvents?.data?.items?.find(
-      (e) =>
-        e.summary === event.summary &&
+      (existingEvent) =>
+        existingEvent.summary.includes(event.summary) &&
         dayjs(event.start.dateTime).format(DATETIME_OPTIONS.FORMAT) ===
-          dayjs(e.start.dateTime).format(DATETIME_OPTIONS.FORMAT)
+          dayjs(existingEvent.start.dateTime).format(DATETIME_OPTIONS.FORMAT)
     );
 
     if (!eventExists) {
