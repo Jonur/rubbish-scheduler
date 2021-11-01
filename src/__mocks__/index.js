@@ -1,18 +1,24 @@
 const puppeteerResponseMock = [
   {
-    title: 'Mixed Recycling (Cans, Plastics & Glass)',
-    nextCollectionDate: '16 September 2021',
+    title: 'Food Waste',
+    nextCollectionDate: '4 November 2021',
   },
-  { title: 'Food Waste', nextCollectionDate: '9 September 2021' },
   {
     title: 'Paper & Cardboard',
-    nextCollectionDate: '9 September 2021',
+    nextCollectionDate: '4 November 2021',
   },
   {
     title: 'Non-Recyclable Refuse',
-    nextCollectionDate: '9 September 2021',
+    nextCollectionDate: '4 November 2021',
   },
-  { title: 'Garden Waste', nextCollectionDate: '13 September 2021' },
+  {
+    title: 'Garden Waste',
+    nextCollectionDate: '8 November 2021',
+  },
+  {
+    title: 'Mixed Recycling (Cans, Plastics & Glass)',
+    nextCollectionDate: '11 November 2021',
+  },
 ];
 
 const existingCalendarEventsMock = {

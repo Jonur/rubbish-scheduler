@@ -4,6 +4,7 @@ const {
   createCalendarEvents,
   getExistingCalendarEvents,
   getOAuth2Client,
+  getShouldBeUsingMocks,
   getWasteCollectionsData,
   updateCalendarWithEvents,
 } = require('./src/utils');
@@ -12,7 +13,7 @@ const {
   const oauth2Client = getOAuth2Client();
   const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
 
-  const wasteCollectionsData = await getWasteCollectionsData();
+  const wasteCollectionsData = getShouldBeUsingMocks() || (await getWasteCollectionsData());
 
   const calendarEvents = createCalendarEvents(wasteCollectionsData);
 
