@@ -1,5 +1,3 @@
-const dayjs = require('dayjs');
-
 const { USER_PREFERENCES } = require('../../constants');
 
 const insertEventsIntoCalendar = (calendar, oauth2Client, calendarEvents) => {
