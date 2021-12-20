@@ -1,22 +1,23 @@
 {
   "name": "rubbish-scheduler",
   "version": "1.0.0",
+  "private": true,
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "start:mock": "node index.js --mode=mock"
+  "homepage": "https://github.com/Jonur/rubbish-scheduler#readme",
+  "bugs": {
+    "url": "https://github.com/Jonur/rubbish-scheduler/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Jonur/rubbish-scheduler.git"
   },
+  "license": "UNLICENCED",
   "author": "Dimitris Damilos<d.k.damilos@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Jonur/rubbish-scheduler/issues"
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "start:mock": "node index.js --mode=mock"
   },
-  "homepage": "https://github.com/Jonur/rubbish-scheduler#readme",
   "dependencies": {
     "dayjs": "^1.10.7",
     "dotenv": "^10.0.0",
