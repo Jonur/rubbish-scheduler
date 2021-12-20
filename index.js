@@ -4,23 +4,22 @@ const {
   createCalendarEvents,
   deleteExistingCalendarEvents,
   getExistingCalendarEvents,
-  getOAuth2Client,
   getShouldBeUsingMocks,
   getWasteCollectionsData,
   insertEventsIntoCalendar,
+  OAuth2Client,
 } = require('./src/utils');
 
 (async () => {
-  const oauth2Client = getOAuth2Client();
-  const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+  const calendar = google.calendar({ version: 'v3' });
 
   const wasteCollectionsData = getShouldBeUsingMocks() || (await getWasteCollectionsData());
 
   const calendarEvents = createCalendarEvents(wasteCollectionsData);
 
-  const existingCalendarEvents = await getExistingCalendarEvents(calendar, calendarEvents);
+  const existingCalendarEvents = await getExistingCalendarEvents(OAuth2Client, calendar, calendarEvents);
 
-  await deleteExistingCalendarEvents(calendar, oauth2Client, existingCalendarEvents);
+  await deleteExistingCalendarEvents(OAuth2Client, calendar, existingCalendarEvents);
 
-  insertEventsIntoCalendar(calendar, oauth2Client, calendarEvents);
+  insertEventsIntoCalendar(OAuth2Client, calendar, calendarEvents);
 })();

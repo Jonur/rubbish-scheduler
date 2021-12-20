@@ -2,8 +2,9 @@ const dayjs = require('dayjs');
 
 const { DATETIME_OPTIONS, USER_PREFERENCES } = require('../../constants');
 
-const getExistingCalendarEvents = async (calendar, calendarEvents = []) => {
+const getExistingCalendarEvents = async (auth, calendar, calendarEvents = []) => {
   const existingCalendarEvents = await calendar.events.list({
+    auth,
     calendarId: USER_PREFERENCES.CALENDAR_ID,
     timeZone: USER_PREFERENCES.TIMEZONE,
     timeMin: dayjs(calendarEvents[0]?.start?.dateTime, USER_PREFERENCES.TIMEZONE)

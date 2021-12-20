@@ -1,10 +1,10 @@
 const { USER_PREFERENCES } = require('../../constants');
 
-const insertEventsIntoCalendar = (calendar, oauth2Client, calendarEvents) => {
+const insertEventsIntoCalendar = (auth, calendar, calendarEvents) => {
   calendarEvents.forEach((event) => {
     calendar.events.insert(
       {
-        auth: oauth2Client,
+        auth,
         calendarId: USER_PREFERENCES.CALENDAR_ID,
         resource: event,
       },

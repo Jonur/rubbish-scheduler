@@ -3,14 +3,9 @@ const { google } = require('googleapis');
 
 dotenv.config();
 
-const { OAuth2 } = google.auth;
+const credentials = JSON.parse(process.env.SERVICE_ACCOUNT_KEY);
+const scopes = 'https://www.googleapis.com/auth/calendar';
 
-const oauth2Client = new OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
+const OAuth2Client = new google.auth.JWT(credentials.client_email, null, credentials.private_key, scopes);
 
-oauth2Client.setCredentials({
-  refresh_token: process.env.REFRESH_TOKEN,
-});
-
-const getOAuth2Client = () => oauth2Client;
-
-module.exports = getOAuth2Client;
+module.exports = OAuth2Client;
