@@ -19,6 +19,7 @@
     "start:mock": "node index.js --mode=mock"
   },
   "dependencies": {
+    "chrome-aws-lambda": "^10.1.0",
     "dayjs": "^1.10.7",
     "dotenv": "^10.0.0",
     "googleapis": "^92.0.0",

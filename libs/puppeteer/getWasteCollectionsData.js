@@ -1,3 +1,4 @@
+const chromium = require('chrome-aws-lambda');
 const puppeteer = require('puppeteer');
 
 const exposeFunctions = require('./exposeFunctions');
@@ -5,8 +6,13 @@ const { SOURCE_WEBSITE } = require('../constants');
 
 const getWasteCollectionsData = async () => {
   const browser = await puppeteer.launch({
-    headless: true,
-    ignoreDefaultArgs: ['--disable-extensions'],
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath,
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true,
+    // headless: true,
+    // ignoreDefaultArgs: ['--disable-extensions'],
   });
   const page = await browser.newPage();
 
