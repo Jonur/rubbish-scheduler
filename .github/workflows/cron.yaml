@@ -1,0 +1,12 @@
+name: daily-cron
+on:
+  schedule:
+    - cron: '30 15 * * *'
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Rubbish Scheduler on Vercel
+        run: |
+          curl --request POST \
+          --url 'https://rubbish-scheduler.jonur.io/api'
