@@ -4,7 +4,10 @@ const exposeFunctions = require('./exposeFunctions');
 const { SOURCE_WEBSITE } = require('../constants');
 
 const getWasteCollectionsData = async () => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    headless: true,
+    ignoreDefaultArgs: ['--disable-extensions'],
+  });
   const page = await browser.newPage();
 
   await exposeFunctions(page);
