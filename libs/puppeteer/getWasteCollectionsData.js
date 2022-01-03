@@ -11,8 +11,6 @@ const getWasteCollectionsData = async () => {
     executablePath: await chromium.executablePath,
     headless: chromium.headless,
     ignoreHTTPSErrors: true,
-    // headless: true,
-    // ignoreDefaultArgs: ['--disable-extensions'],
   });
   const page = await browser.newPage();
 
