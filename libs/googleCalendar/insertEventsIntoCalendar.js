@@ -1,7 +1,7 @@
 const { USER_PREFERENCES } = require('../constants');
 
-const insertEventsIntoCalendar = (auth, calendar, calendarEvents) => {
-  calendarEvents.forEach((event) => {
+const insertEventsIntoCalendar = (auth, calendar, calendarEvents, callback) => {
+  calendarEvents.forEach((event, index) => {
     calendar.events.insert(
       {
         auth,
@@ -12,7 +12,12 @@ const insertEventsIntoCalendar = (auth, calendar, calendarEvents) => {
         if (error) {
           console.log(error);
         } else {
-          console.log('Event created');
+          console.log(`Event created: ${event.summary}`);
+
+          const isLastEvent = index === calendarEvents.length - 1;
+          if (isLastEvent) {
+            callback();
+          }
         }
       }
     );

@@ -10,7 +10,7 @@ const {
   OAuth2Client,
 } = require('../libs');
 
-const wasteCollectionCalendar = async () => {
+const wasteCollectionCalendar = async (_, res) => {
   const calendar = google.calendar({ version: 'v3' });
 
   const wasteCollectionsData = getShouldBeUsingMocks() || (await getWasteCollectionsData());
@@ -21,7 +21,7 @@ const wasteCollectionCalendar = async () => {
 
   await deleteExistingCalendarEvents(OAuth2Client, calendar, existingCalendarEvents);
 
-  insertEventsIntoCalendar(OAuth2Client, calendar, calendarEvents);
+  insertEventsIntoCalendar(OAuth2Client, calendar, calendarEvents, () => res?.send?.('All events created!'));
 };
 
 module.exports = wasteCollectionCalendar;
