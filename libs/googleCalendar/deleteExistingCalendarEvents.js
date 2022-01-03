@@ -1,4 +1,4 @@
-const { USER_PREFERENCES } = require('../../constants');
+const { USER_PREFERENCES } = require('../constants');
 
 const deleteExistingCalendarEvents = async (auth, calendar, existingCalendarEvents) => {
   const events = existingCalendarEvents?.data?.items || [];

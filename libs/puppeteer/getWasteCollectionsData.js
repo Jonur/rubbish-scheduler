@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 
 const exposeFunctions = require('./exposeFunctions');
-const { SOURCE_WEBSITE } = require('../../constants');
+const { SOURCE_WEBSITE } = require('../constants');
 
 const getWasteCollectionsData = async () => {
   const browser = await puppeteer.launch();

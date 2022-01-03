@@ -8,7 +8,7 @@ const {
   getWasteCollectionsData,
   insertEventsIntoCalendar,
   OAuth2Client,
-} = require('../src/utils');
+} = require('../libs');
 
 const wasteCollectionCalendar = async () => {
   const calendar = google.calendar({ version: 'v3' });

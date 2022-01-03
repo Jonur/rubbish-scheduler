@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 
-const { DATETIME_OPTIONS, USER_PREFERENCES } = require('../../constants');
+const { DATETIME_OPTIONS, USER_PREFERENCES } = require('../constants');
 
 const getExistingCalendarEvents = async (auth, calendar, calendarEvents = []) => {
   const existingCalendarEvents = await calendar.events.list({

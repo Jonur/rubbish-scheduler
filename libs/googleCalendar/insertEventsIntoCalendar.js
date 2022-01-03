@@ -1,4 +1,4 @@
-const { USER_PREFERENCES } = require('../../constants');
+const { USER_PREFERENCES } = require('../constants');
 
 const insertEventsIntoCalendar = (auth, calendar, calendarEvents) => {
   calendarEvents.forEach((event) => {

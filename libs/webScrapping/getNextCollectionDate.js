@@ -1,5 +1,5 @@
 const dayjs = require('dayjs');
-const { MONTHS } = require('../../constants');
+const { MONTHS } = require('../constants');
 
 const currentYear = dayjs().year();
 
