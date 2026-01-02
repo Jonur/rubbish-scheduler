@@ -1,27 +1,18 @@
 const { USER_PREFERENCES } = require('../constants');
 
-const insertEventsIntoCalendar = (auth, calendar, calendarEvents, callback) => {
-  calendarEvents.forEach((event, index) => {
-    calendar.events.insert(
-      {
-        auth,
-        calendarId: USER_PREFERENCES.CALENDAR_ID,
-        resource: event,
-      },
-      (error) => {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log(`Event created: ${event.summary}`);
+const insertEventsIntoCalendar = async (calendar, calendarEvents = []) => {
+  if (!calendarEvents.length) return;
 
-          const isLastEvent = index === calendarEvents.length - 1;
-          if (isLastEvent) {
-            callback();
-          }
-        }
-      }
-    );
-  });
+  for (const event of calendarEvents) {
+    await calendar.events.insert({
+      calendarId: USER_PREFERENCES.CALENDAR_ID,
+      resource: event,
+    });
+  }
+
+  console.log(`Inserted ${calendarEvents.length} events`);
 };
+
+module.exports = insertEventsIntoCalendar;
 
 module.exports = insertEventsIntoCalendar;

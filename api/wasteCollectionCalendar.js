@@ -11,17 +11,36 @@ const {
 } = require('../libs');
 
 const wasteCollectionCalendar = async (_, res) => {
-  const calendar = google.calendar({ version: 'v3' });
+  const calendar = google.calendar({ version: 'v3', auth: OAuth2Client });
 
-  const wasteCollectionsData = getShouldBeUsingMocks() || (await getWasteCollectionsData());
+  let wasteCollectionsData = [];
+  try {
+    wasteCollectionsData = getShouldBeUsingMocks() || (await getWasteCollectionsData());
+  } catch (error) {
+    console.error('Error fetching waste collections data:', error);
+  }
 
   const calendarEvents = createCalendarEvents(wasteCollectionsData);
 
-  const existingCalendarEvents = await getExistingCalendarEvents(OAuth2Client, calendar, calendarEvents);
+  let existingCalendarEvents;
+  try {
+    existingCalendarEvents = await getExistingCalendarEvents(calendar, calendarEvents);
+  } catch (error) {
+    console.error('Error fetching existing calendar events:', error);
+  }
 
-  await deleteExistingCalendarEvents(OAuth2Client, calendar, existingCalendarEvents);
+  try {
+    await deleteExistingCalendarEvents(calendar, existingCalendarEvents);
+  } catch (error) {
+    console.error('Error deleting existing calendar events:', error);
+  }
 
-  insertEventsIntoCalendar(OAuth2Client, calendar, calendarEvents, () => res?.send?.('All events created!'));
+  try {
+    await insertEventsIntoCalendar(calendar, calendarEvents);
+    res?.send?.('All events created!');
+  } catch (error) {
+    console.error('Error inserting new calendar events:', error);
+  }
 };
 
 module.exports = wasteCollectionCalendar;

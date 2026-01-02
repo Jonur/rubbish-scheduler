@@ -1,47 +1,27 @@
-const chromium = require('chrome-aws-lambda');
-const puppeteer = require('puppeteer');
-
-const exposeFunctions = require('./exposeFunctions');
+const launchBrowser = require('./launchBrowser');
+const { extractNextCollectionDate } = require('../webScrapping/extractNextCollectionDate');
 const { SOURCE_WEBSITE } = require('../constants');
 
 const getWasteCollectionsData = async () => {
-  const browser = await puppeteer.launch({
-    args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath,
-    headless: chromium.headless,
-    ignoreHTTPSErrors: true,
-  });
+  const browser = await launchBrowser();
   const page = await browser.newPage();
 
-  await exposeFunctions(page);
+  await page.goto(SOURCE_WEBSITE, { waitUntil: 'domcontentloaded' });
+  await page.waitForSelector('.waste-service-name', { timeout: 30_000 });
 
-  await page.goto(SOURCE_WEBSITE, { waitUntil: 'networkidle2' });
+  const titles = await page.$$eval('.waste-service-name', (els) => els.map((e) => (e.textContent || '').trim()));
+  const details = await page.$$eval('.waste-service-name + div', (els) => els.map((e) => (e.textContent || '').trim()));
 
-  const wasteCollectionsData = await page.evaluate(async () => {
-    const wasteTitles = [...document.querySelectorAll('.waste-service-name')];
-    const wasteDetails = [...document.querySelectorAll('.waste-service-name + div')];
+  const wasteCollectionsData = [];
+  for (let i = 0; i < titles.length; i++) {
+    const nextCollectionDate = extractNextCollectionDate(details[i]);
+    if (!nextCollectionDate) continue;
 
-    const wasteCollections = [];
-    for (let i = 0; i < wasteTitles.length; i++) {
-      const wasteType = wasteTitles[i].innerText;
-
-      const nextCollectionDetails = await window.getNextWasteCollectionDetails(wasteDetails[i].innerText);
-
-      if (!nextCollectionDetails) continue;
-
-      const nextCollectionDate = await window.getNextCollectionDate(nextCollectionDetails);
-
-      if (!nextCollectionDate) continue;
-
-      wasteCollections.push({
-        title: wasteType,
-        nextCollectionDate,
-      });
-    }
-
-    return wasteCollections;
-  });
+    wasteCollectionsData.push({
+      title: titles[i],
+      nextCollectionDate,
+    });
+  }
 
   await browser.close();
 
