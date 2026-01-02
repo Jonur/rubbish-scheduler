@@ -1,13 +1,7 @@
 {
-  "routes": [
-    {
-      "src": "/",
-      "dest": "public/index.html"
-    },
-    {
-      "src": "/api",
-      "methods": ["GET"],
-      "dest": "api/wasteCollectionCalendar.js"
-    }
-  ]
+  "rewrites": [
+    { "source": "/", "destination": "/public/index.html" },
+    { "source": "/api/waste-collection", "destination": "/api/wasteCollectionCalendar.js" }
+  ],
+  "crons": [{ "path": "/api/waste-collection", "schedule": "0 12 * * *" }]
 }
