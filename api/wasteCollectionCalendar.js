@@ -1,6 +1,7 @@
 const { google } = require('googleapis');
 
 const {
+  assertCronAuth,
   createCalendarEvents,
   deleteExistingCalendarEvents,
   getExistingCalendarEvents,
@@ -10,36 +11,24 @@ const {
   OAuth2Client,
 } = require('../libs');
 
-const wasteCollectionCalendar = async (_, res) => {
-  const calendar = google.calendar({ version: 'v3', auth: OAuth2Client });
-
-  let wasteCollectionsData = [];
+const wasteCollectionCalendar = async (req, res) => {
   try {
-    wasteCollectionsData = getShouldBeUsingMocks() || (await getWasteCollectionsData());
-  } catch (error) {
-    console.error('Error fetching waste collections data:', error);
-  }
+    assertCronAuth(req);
 
-  const calendarEvents = createCalendarEvents(wasteCollectionsData);
+    const calendar = google.calendar({ version: 'v3', auth: OAuth2Client });
 
-  let existingCalendarEvents;
-  try {
-    existingCalendarEvents = await getExistingCalendarEvents(calendar, calendarEvents);
-  } catch (error) {
-    console.error('Error fetching existing calendar events:', error);
-  }
+    const wasteCollectionsData = getShouldBeUsingMocks() || (await getWasteCollectionsData());
+    const calendarEvents = createCalendarEvents(wasteCollectionsData);
 
-  try {
+    const existingCalendarEvents = await getExistingCalendarEvents(calendar, calendarEvents);
     await deleteExistingCalendarEvents(calendar, existingCalendarEvents);
-  } catch (error) {
-    console.error('Error deleting existing calendar events:', error);
-  }
 
-  try {
     await insertEventsIntoCalendar(calendar, calendarEvents);
-    res?.send?.('All events created!');
+
+    res.status(200).send('All events created!');
   } catch (error) {
-    console.error('Error inserting new calendar events:', error);
+    console.error(error);
+    res.status(error.statusCode || 500).send(error.message || 'Internal error');
   }
 };
 
