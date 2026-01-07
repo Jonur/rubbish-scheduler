@@ -1,11 +1,8 @@
-const yargs = require('yargs/yargs');
-const { hideBin } = require('yargs/helpers');
-
+// libs/environment/getShouldBeUsingMocks.js
 const { puppeteerResponseMock } = require('../../__mocks__');
 
-const { mode = '' } = yargs(hideBin(process.argv)).argv;
-const isMockMode = mode === 'mock';
+const truthy = (v) => ['1', 'true', 'yes', 'on'].includes(String(v || '').toLowerCase());
 
-const getShouldBeUsingMocks = () => (isMockMode ? puppeteerResponseMock : null);
+const getShouldBeUsingMocks = () => (truthy(process.env.MOCK_SCRAPE) ? puppeteerResponseMock : null);
 
 module.exports = getShouldBeUsingMocks;
