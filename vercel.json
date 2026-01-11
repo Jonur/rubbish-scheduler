@@ -1,8 +1,5 @@
 {
-  "rewrites": [
-    { "source": "/src/api/waste-collection", "destination": "/src/api/wasteCollectionCalendar.js" },
-    { "source": "/", "destination": "/public/index.html" }
-  ],
+  "rewrites": [{ "source": "/src/api/waste-collection", "destination": "/src/api/wasteCollectionCalendar.js" }],
   "crons": [{ "path": "/src/api/waste-collection", "schedule": "0 12 * * *" }],
   "functions": {
     "api/wasteCollectionCalendar.js": {
