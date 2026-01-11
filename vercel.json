@@ -1,8 +1,7 @@
 {
-  "rewrites": [{ "source": "/src/api/waste-collection", "destination": "/src/api/wasteCollectionCalendar.js" }],
-  "crons": [{ "path": "/src/api/waste-collection", "schedule": "0 12 * * *" }],
+  "crons": [{ "path": "/api/waste-collection", "schedule": "0 12 * * *" }],
   "functions": {
-    "api/wasteCollectionCalendar.js": {
+    "api/waste-collection.js": {
       "includeFiles": "node_modules/@sparticuz/chromium/**",
       "maxDuration": 60
     }

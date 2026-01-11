@@ -13,11 +13,9 @@
   },
   "license": "UNLICENCED",
   "author": "Dimitris Damilos<d.k.damilos@gmail.com>",
-  "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "start:local": "node src/api/wasteCollectionLocalRun.js",
-    "start:mock": "MOCK_SCRAPE=1 node index.js"
+    "start:local": "node scripts/waste-collection-local.js",
+    "start:local:mock": "MOCK_SCRAPE=1 node scripts/waste-collection-local.js"
   },
   "engines": {
     "node": ">=24"
