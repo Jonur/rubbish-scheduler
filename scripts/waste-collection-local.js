@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const runWasteCollectionSync = require('../src/lib/runWasteCollectionSync');
 
 (async () => {

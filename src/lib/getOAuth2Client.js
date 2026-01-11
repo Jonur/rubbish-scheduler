@@ -1,6 +1,6 @@
 const { google } = require('googleapis');
 
-const { SERVICE_ACCOUNT_KEY } = require('../constants');
+const { SERVICE_ACCOUNT_KEY } = require('../config');
 
 const credentials = JSON.parse(SERVICE_ACCOUNT_KEY);
 

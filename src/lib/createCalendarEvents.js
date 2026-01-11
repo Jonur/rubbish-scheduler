@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 
-const { DATETIME_OPTIONS, USER_PREFERENCES } = require('../constants');
+const { DATETIME_OPTIONS, USER_PREFERENCES } = require('../config');
 
 const createCalendarEvents = (wasteCollectionsData = []) => {
   const mergedCollectionsOfSameDay = wasteCollectionsData.reduce((acc, collection) => {

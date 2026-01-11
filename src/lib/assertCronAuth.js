@@ -1,4 +1,4 @@
-const { CRON_SECRET } = require('../constants');
+const { CRON_SECRET } = require('../config');
 
 const assertCronAuth = (req) => {
   if (!CRON_SECRET) return;

@@ -1,4 +1,4 @@
-const { USER_PREFERENCES } = require('../constants');
+const { USER_PREFERENCES } = require('../config');
 
 const insertEventsIntoCalendar = async (calendar, calendarEvents = []) => {
   if (!calendarEvents.length) return;

@@ -1,6 +1,6 @@
 const { launchBrowser } = require('./launchBrowser');
 const { extractNextCollectionDate } = require('./extractNextCollectionDate');
-const { SOURCE_WEBSITE } = require('../constants');
+const { SOURCE_WEBSITE } = require('../config');
 
 const getWasteCollectionsData = async () => {
   const browser = await launchBrowser();

@@ -5,7 +5,7 @@ const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const { DATETIME_OPTIONS, USER_PREFERENCES } = require('../constants');
+const { DATETIME_OPTIONS, USER_PREFERENCES } = require('../config');
 
 const getExistingCalendarEvents = async (calendar, calendarEvents = []) => {
   if (!calendarEvents.length) return { data: { items: [] } };

@@ -1,10 +1,8 @@
-const { VERCEL, AWS_LAMBDA_FUNCTION_VERSION, AWS_EXECUTION_ENV } = require('../constants');
-
-const isServerless = VERCEL === '1' || !!AWS_LAMBDA_FUNCTION_VERSION || !!AWS_EXECUTION_ENV;
+const { IS_SERVERLESS } = require('../config');
 
 async function launchBrowser() {
   // ✅ Local dev: use full puppeteer (bundles Chrome)
-  if (!isServerless) {
+  if (!IS_SERVERLESS) {
     const puppeteer = require('puppeteer');
     return puppeteer.launch({
       headless: true,
