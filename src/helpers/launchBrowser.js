@@ -27,4 +27,4 @@ async function launchBrowser() {
   });
 }
 
-module.exports = launchBrowser;
+module.exports = { launchBrowser };

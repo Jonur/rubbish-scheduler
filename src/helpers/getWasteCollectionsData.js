@@ -1,5 +1,5 @@
-const launchBrowser = require('./launchBrowser');
-const { extractNextCollectionDate } = require('../webScrapping/extractNextCollectionDate');
+const { launchBrowser } = require('./launchBrowser');
+const { extractNextCollectionDate } = require('./extractNextCollectionDate');
 const { SOURCE_WEBSITE } = require('../constants');
 
 const getWasteCollectionsData = async () => {

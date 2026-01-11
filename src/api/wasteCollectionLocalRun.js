@@ -1,15 +1,13 @@
 require('dotenv').config();
 const { google } = require('googleapis');
 
-const {
-  createCalendarEvents,
-  deleteExistingCalendarEvents,
-  getExistingCalendarEvents,
-  getShouldBeUsingMocks,
-  getWasteCollectionsData,
-  insertEventsIntoCalendar,
-  OAuth2Client,
-} = require('../libs');
+const getShouldBeUsingMocks = require('../helpers/getShouldBeUsingMocks');
+const getWasteCollectionsData = require('../helpers/getWasteCollectionsData');
+const createCalendarEvents = require('../helpers/createCalendarEvents');
+const deleteExistingCalendarEvents = require('../helpers/deleteExistingCalendarEvents');
+const OAuth2Client = require('../helpers/getOAuth2Client');
+const getExistingCalendarEvents = require('../helpers/getExistingCalendarEvents');
+const insertEventsIntoCalendar = require('../helpers/insertEventsIntoCalendar');
 
 (async () => {
   const calendar = google.calendar({ version: 'v3', auth: OAuth2Client });

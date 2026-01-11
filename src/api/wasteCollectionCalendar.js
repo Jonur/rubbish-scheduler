@@ -1,15 +1,13 @@
 const { google } = require('googleapis');
 
-const {
-  assertCronAuth,
-  createCalendarEvents,
-  deleteExistingCalendarEvents,
-  getExistingCalendarEvents,
-  getShouldBeUsingMocks,
-  getWasteCollectionsData,
-  insertEventsIntoCalendar,
-  OAuth2Client,
-} = require('../libs');
+const assertCronAuth = require('../helpers/assertCronAuth');
+const getShouldBeUsingMocks = require('../helpers/getShouldBeUsingMocks');
+const getWasteCollectionsData = require('../helpers/getWasteCollectionsData');
+const createCalendarEvents = require('../helpers/createCalendarEvents');
+const deleteExistingCalendarEvents = require('../helpers/deleteExistingCalendarEvents');
+const OAuth2Client = require('../helpers/getOAuth2Client');
+const getExistingCalendarEvents = require('../helpers/getExistingCalendarEvents');
+const insertEventsIntoCalendar = require('../helpers/insertEventsIntoCalendar');
 
 const wasteCollectionCalendar = async (req, res) => {
   try {

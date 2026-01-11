@@ -16,7 +16,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start:local": "node api/wasteCollectionLocalRun.js",
+    "start:local": "node src/api/wasteCollectionLocalRun.js",
     "start:mock": "MOCK_SCRAPE=1 node index.js"
   },
   "engines": {

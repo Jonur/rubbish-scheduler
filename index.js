@@ -1,3 +1,3 @@
-const wasteCollectionCalendar = require('./api/wasteCollectionCalendar');
+const wasteCollectionCalendar = require('./src/api/wasteCollectionCalendar');
 
 wasteCollectionCalendar();
