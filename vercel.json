@@ -6,7 +6,8 @@
   "crons": [{ "path": "/api/waste-collection", "schedule": "0 12 * * *" }],
   "functions": {
     "api/wasteCollectionCalendar.js": {
-      "includeFiles": "node_modules/@sparticuz/chromium/**"
+      "includeFiles": "node_modules/@sparticuz/chromium/**",
+      "maxDuration": 60
     }
   }
 }
