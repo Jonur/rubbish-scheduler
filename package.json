@@ -23,7 +23,7 @@
     "node": ">=24"
   },
   "dependencies": {
-    "@sparticuz/chromium-min": "^143.0.0",
+    "@sparticuz/chromium": "^143.0.4",
     "dayjs": "^1.11.19",
     "dotenv": "^17.2.3",
     "googleapis": "^169.0.0",
