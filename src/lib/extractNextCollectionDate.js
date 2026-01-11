@@ -1,6 +1,4 @@
-const dayjs = require('dayjs');
-const customParseFormat = require('dayjs/plugin/customParseFormat');
-dayjs.extend(customParseFormat);
+const dayjs = require('./dayjs');
 
 const ORDINAL_SUFFIXES_RE = /(\d{1,2})(st|nd|rd|th)/gi;
 
