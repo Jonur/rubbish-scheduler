@@ -1,5 +1,6 @@
-const isServerless =
-  process.env.VERCEL === '1' || !!process.env.AWS_LAMBDA_FUNCTION_VERSION || !!process.env.AWS_EXECUTION_ENV;
+const { VERCEL, AWS_LAMBDA_FUNCTION_VERSION, AWS_EXECUTION_ENV } = require('../constants');
+
+const isServerless = VERCEL === '1' || !!AWS_LAMBDA_FUNCTION_VERSION || !!AWS_EXECUTION_ENV;
 
 async function launchBrowser() {
   // ✅ Local dev: use full puppeteer (bundles Chrome)
