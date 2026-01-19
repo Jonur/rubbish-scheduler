@@ -1,10 +1,10 @@
-const mustGet = (key: string) => {
+export const mustGet = (key: string) => {
   const v = process.env[key];
   if (!v) throw new Error(`Missing required env var: ${key}`);
   return v;
 };
 
-const truthy = (v?: string) => ["1", "true", "yes", "on"].includes(String(v || "").toLowerCase());
+export const truthy = (v?: string) => ["1", "true", "yes", "on"].includes(String(v || "").toLowerCase());
 
 export const SOURCE_WEBSITE = mustGet("SOURCE_WEBSITE");
 export const USER_LOCATION = process.env.USER_LOCATION || "";

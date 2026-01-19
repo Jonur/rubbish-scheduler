@@ -2,6 +2,7 @@ import type { calendar_v3 } from "googleapis";
 
 import { USER_PREFERENCES } from "../config";
 import type { CalendarEvent } from "../types";
+import logger from "./logger";
 
 const insertEventsIntoCalendar = async (calendar: calendar_v3.Calendar, calendarEvents: CalendarEvent[] = []) => {
   for (const event of calendarEvents) {
@@ -11,7 +12,7 @@ const insertEventsIntoCalendar = async (calendar: calendar_v3.Calendar, calendar
     });
   }
 
-  console.log(`Inserted ${calendarEvents.length} events`);
+  logger(`Inserted ${calendarEvents.length} events`);
 };
 
 export default insertEventsIntoCalendar;

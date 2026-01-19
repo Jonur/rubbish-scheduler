@@ -1,6 +1,6 @@
 {
   "name": "rubbish-scheduler",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "description": "A small Node app to add the waste data collection details to my calendar. I created this because Bromley Council kept arbitrarily changes the dates without informing the residents.",
   "homepage": "https://github.com/Jonur/rubbish-scheduler#readme",
@@ -21,6 +21,10 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier . --check",
     "format:fix": "prettier . --write",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ci": "vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=./coverage/junit.xml",
+    "test:coverage": "vitest run --coverage",
     "typecheck": "tsc -b"
   },
   "engines": {
@@ -40,6 +44,7 @@
     "@typescript-eslint/eslint-plugin": "^8.52.0",
     "@typescript-eslint/parser": "^8.52.0",
     "@vercel/node": "^5.5.23",
+    "@vitest/coverage-v8": "^4.0.17",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -48,6 +53,7 @@
     "globals": "^17.0.0",
     "prettier": "^3.7.4",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.17"
   }
 }

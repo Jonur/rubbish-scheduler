@@ -138,3 +138,10 @@ dist
 .DS_Store
 
 .vercel
+
+# Vitest
+coverage/
+.vitest/
+
+# Optional (if you add JUnit output)
+coverage/junit.xml
