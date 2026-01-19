@@ -1,6 +1,6 @@
 {
   "name": "rubbish-scheduler",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "description": "A small Node app to add the waste data collection details to my calendar. I created this because Bromley Council kept arbitrarily changes the dates without informing the residents.",
   "homepage": "https://github.com/Jonur/rubbish-scheduler#readme",
@@ -13,9 +13,15 @@
   },
   "license": "UNLICENCED",
   "author": "Dimitris Damilos<d.k.damilos@gmail.com>",
+  "type": "module",
   "scripts": {
-    "start:local": "node scripts/waste-collection-local.js",
-    "start:local:mock": "MOCK_SCRAPE=1 node scripts/waste-collection-local.js"
+    "start:local": "tsx scripts/waste-collection-local.ts",
+    "start:local:mock": "MOCK_SCRAPE=1 tsx scripts/waste-collection-local.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --check",
+    "format:fix": "prettier . --write",
+    "typecheck": "tsc -b"
   },
   "engines": {
     "node": ">=24"
@@ -27,5 +33,21 @@
     "googleapis": "^169.0.0",
     "puppeteer": "^24.34.0",
     "puppeteer-core": "^24.34.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@types/node": "^25.0.6",
+    "@typescript-eslint/eslint-plugin": "^8.52.0",
+    "@typescript-eslint/parser": "^8.52.0",
+    "@vercel/node": "^5.5.23",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-unused-imports": "^4.3.0",
+    "globals": "^17.0.0",
+    "prettier": "^3.7.4",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }

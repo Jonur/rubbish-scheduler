@@ -65,11 +65,17 @@ CRON_SECRET="secret"
 # install dependencies
 npm install
 
-# start the app
-npm run start
+# start the app locally
+npm run start:local
 
-# OR start the app with mock data skipping scraping
-npm run start:mock
+# OR start the app locally with mock data skipping scraping
+npm run start:local:mock
+
+# lint
+npm run lint
+
+# typecheck
+npm run typecheck
 ```
 
 ## Tech stack

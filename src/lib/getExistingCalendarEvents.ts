@@ -1,14 +1,19 @@
-const dayjs = require('./dayjs');
+import type { calendar_v3 } from "googleapis";
 
-const { DATETIME_OPTIONS, USER_PREFERENCES } = require('../config');
+import dayjs from "./dayjs";
+import { DATETIME_OPTIONS, USER_PREFERENCES } from "../config";
+import type { CalendarEvent } from "../types";
 
-const getExistingCalendarEvents = async (calendar, calendarEvents = []) => {
-  if (!calendarEvents.length) return { data: { items: [] } };
+const getExistingCalendarEvents = async (
+  calendar: calendar_v3.Calendar,
+  calendarEvents: CalendarEvent[] = []
+): Promise<calendar_v3.Schema$Event[]> => {
+  if (!calendarEvents.length) return [];
 
   const first = calendarEvents[0]?.start?.dateTime;
   const last = calendarEvents[calendarEvents.length - 1]?.start?.dateTime;
 
-  if (!first || !last) return { data: { items: [] } };
+  if (!first || !last) return [];
 
   const timeMin = dayjs(first)
     .tz(USER_PREFERENCES.TIMEZONE)
@@ -35,10 +40,10 @@ const getExistingCalendarEvents = async (calendar, calendarEvents = []) => {
     timeMin,
     timeMax,
     singleEvents: true, // important: expands recurring
-    orderBy: 'startTime', // required when singleEvents=true
+    orderBy: "startTime", // required when singleEvents=true
   });
 
-  return res;
+  return res?.data?.items || [];
 };
 
-module.exports = getExistingCalendarEvents;
+export default getExistingCalendarEvents;
