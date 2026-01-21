@@ -37,6 +37,7 @@ export default defineConfig({
 
       // Exclude tests + the files you explicitly listed
       exclude: [
+        "scripts/**",
         "**/*.{test,spec}.ts",
         "**/__mocks__/**",
         "src/**/types.ts",
