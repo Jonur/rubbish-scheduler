@@ -1,16 +1,12 @@
+import type { calendar_v3 } from "googleapis";
+
 import dayjs from "./dayjs";
 import { DATETIME_OPTIONS, USER_PREFERENCES } from "../config";
-import type { CalendarEvent, WasteCollectionScrappedData } from "../types";
+import type { WasteCollectionScrappedData } from "../types";
+import mergeCollectionsOfSameDay from "./mergeCollectionsOfSameDay";
 
-const createCalendarEvents = (wasteCollectionsData: WasteCollectionScrappedData[] = []): CalendarEvent[] => {
-  const mergedCollectionsOfSameDay = wasteCollectionsData.reduce<WasteCollectionScrappedData[]>((acc, collection) => {
-    const idx = acc.findIndex((c) => c.nextCollectionDate === collection.nextCollectionDate);
-    if (idx > -1) {
-      acc[idx].title = `${acc[idx].title} & ${collection.title}`;
-      return acc;
-    }
-    return [...acc, collection];
-  }, []);
+const createCalendarEvents = (wasteCollectionsData: WasteCollectionScrappedData[] = []): calendar_v3.Schema$Event[] => {
+  const mergedCollectionsOfSameDay = mergeCollectionsOfSameDay(wasteCollectionsData);
 
   const tz = USER_PREFERENCES.TIMEZONE;
 
@@ -30,7 +26,7 @@ const createCalendarEvents = (wasteCollectionsData: WasteCollectionScrappedData[
       location: USER_PREFERENCES.LOCATION,
       start: { dateTime: eventStartTime, timeZone: tz },
       summary: collection.title,
-    } satisfies CalendarEvent;
+    } satisfies calendar_v3.Schema$Event;
   });
 
   return calendarEvents.sort((a, b) => (a.start.dateTime > b.start.dateTime ? 1 : -1));

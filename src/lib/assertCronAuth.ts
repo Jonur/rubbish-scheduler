@@ -10,7 +10,7 @@ const assertCronAuth = (req: VercelRequest) => {
   const token = typeof authHeader === "string" && authHeader.startsWith("Bearer ") ? authHeader.slice(7) : authHeader;
 
   if (token !== CRON_SECRET) {
-    throw new UnauthorizedError("Unauthorized");
+    throw new UnauthorizedError("Unauthorised");
   }
 };
 

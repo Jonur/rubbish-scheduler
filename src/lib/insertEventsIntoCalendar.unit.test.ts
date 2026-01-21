@@ -1,9 +1,9 @@
 import type { calendar_v3 } from "googleapis";
 
 import * as config from "../config";
-import type { CalendarEvent } from "../types";
 import insertEventsIntoCalendar from "./insertEventsIntoCalendar";
 import logger from "./logger";
+import { createMockedCalendar } from "../__mocks__";
 
 describe("insertEventsIntoCalendar", () => {
   vi.mock("./logger");
@@ -12,14 +12,9 @@ describe("insertEventsIntoCalendar", () => {
   const mockedConfig = vi.mocked(config);
   const mockedLogger = vi.mocked(logger);
 
-  const mockedInsert = vi.fn();
-  const mockedCalendar = {
-    events: {
-      insert: mockedInsert,
-    },
-  } as unknown as calendar_v3.Calendar;
+  const { mockedCalendar, mockedEventsInsert } = createMockedCalendar();
 
-  const mockedCalendarEvents: CalendarEvent[] = [
+  const mockedCalendarEvents: calendar_v3.Schema$Event[] = [
     {
       colorId: "6",
       summary: "Food Waste",
@@ -56,19 +51,19 @@ describe("insertEventsIntoCalendar", () => {
 
   it("should insert two events into the calendar", async () => {
     await insertEventsIntoCalendar(mockedCalendar, mockedCalendarEvents);
-    expect(mockedInsert).toHaveBeenCalledTimes(2);
+    expect(mockedEventsInsert).toHaveBeenCalledTimes(2);
   });
 
   it("should insert the events to the correct calendar", async () => {
     await insertEventsIntoCalendar(mockedCalendar, mockedCalendarEvents);
 
-    expect(mockedInsert).toHaveBeenNthCalledWith(
+    expect(mockedEventsInsert).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
         calendarId: "mocked-jonur-calendar",
       })
     );
-    expect(mockedInsert).toHaveBeenNthCalledWith(
+    expect(mockedEventsInsert).toHaveBeenNthCalledWith(
       2,
       expect.objectContaining({
         calendarId: "mocked-jonur-calendar",

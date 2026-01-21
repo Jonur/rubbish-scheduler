@@ -7,8 +7,8 @@ import getShouldBeUsingMocks from "./getShouldBeUsingMocks";
 import getWasteCollectionsData from "./getWasteCollectionsData";
 import insertEventsIntoCalendar from "./insertEventsIntoCalendar";
 import runWasteCollectionSync from "./runWasteCollectionSync";
-import { existingCalendarEventsMock, puppeteerResponseMock } from "../__mocks__";
-import type { CalendarEvent, WasteCollectionScrappedData } from "../types";
+import { createCalendarEvent, existingCalendarEventsMock, puppeteerResponseMock } from "../__mocks__";
+import type { WasteCollectionScrappedData } from "../types";
 
 describe("runWasteCollectionSync", () => {
   vi.mock("googleapis", async (importOriginal) => ({
@@ -38,12 +38,10 @@ describe("runWasteCollectionSync", () => {
   const mockedGoogleCalendar = vi.spyOn(mockedGoogle, "calendar");
 
   const mockedCalendar = {} as calendar_v3.Calendar;
-  const mockedCalendarEvents: CalendarEvent[] = [
-    {
-      colorId: "6",
+  const mockedCalendarEvents = [
+    createCalendarEvent({
       summary: "Food Waste",
       description: "Waste collection of Food Waste",
-      location: "Bromley",
       start: {
         dateTime: "2025-01-04T08:00:00.000Z",
         timeZone: "Europe/London",
@@ -52,12 +50,10 @@ describe("runWasteCollectionSync", () => {
         dateTime: "2025-01-04T10:00:00.000Z",
         timeZone: "Europe/London",
       },
-    },
-    {
-      colorId: "6",
+    }),
+    createCalendarEvent({
       summary: "Recycling & Garden Waste",
       description: "Waste collection of Recycling & Garden Waste",
-      location: "Bromley",
       start: {
         dateTime: "2025-01-11T08:00:00.000Z",
         timeZone: "Europe/London",
@@ -66,7 +62,7 @@ describe("runWasteCollectionSync", () => {
         dateTime: "2025-01-11T10:00:00.000Z",
         timeZone: "Europe/London",
       },
-    },
+    }),
   ];
 
   beforeEach(() => {

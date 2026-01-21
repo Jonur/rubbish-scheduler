@@ -2,11 +2,10 @@ import type { calendar_v3 } from "googleapis";
 
 import dayjs from "./dayjs";
 import { DATETIME_OPTIONS, USER_PREFERENCES } from "../config";
-import type { CalendarEvent } from "../types";
 
 const getExistingCalendarEvents = async (
   calendar: calendar_v3.Calendar,
-  calendarEvents: CalendarEvent[] = []
+  calendarEvents: calendar_v3.Schema$Event[] = []
 ): Promise<calendar_v3.Schema$Event[]> => {
   if (!calendarEvents.length) return [];
 
