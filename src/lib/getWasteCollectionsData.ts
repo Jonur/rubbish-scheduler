@@ -1,6 +1,7 @@
 import { SOURCE_WEBSITE } from "../config";
 import type { WasteCollectionScrappedData } from "../types";
 import { extractNextCollectionDate } from "./extractNextCollectionDate";
+import getTextContent from "./getTextContent";
 import launchBrowser from "./launchBrowser";
 
 const getWasteCollectionsData = async (): Promise<WasteCollectionScrappedData[]> => {
@@ -31,9 +32,9 @@ const getWasteCollectionsData = async (): Promise<WasteCollectionScrappedData[]>
   // Wait only for the data we care about
   await page.waitForSelector(".waste-service-name");
 
-  const titles = await page.$$eval(".waste-service-name", (els) => els.map((e) => (e.textContent || "").trim()));
+  const titles = await page.$$eval(".waste-service-name", getTextContent);
 
-  const details = await page.$$eval(".waste-service-name + div", (els) => els.map((e) => (e.textContent || "").trim()));
+  const details = await page.$$eval(".waste-service-name + div", getTextContent);
 
   const wasteCollectionsData: WasteCollectionScrappedData[] = [];
 

@@ -14,6 +14,14 @@ describe("getErrorStatusCode", () => {
     expect(result).toBe(500);
   });
 
+  it("should return the default status code if the provided status code is falsy", () => {
+    const mockedError = new Error();
+    Object.assign(mockedError, { statusCode: 0 });
+
+    const result = getErrorStatusCode(mockedError);
+    expect(result).toBe(500);
+  });
+
   it("should return the default status code if one does not exist in the provided Error", () => {
     const mockedError = new Error();
     const result = getErrorStatusCode(mockedError);
