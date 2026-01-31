@@ -1,7 +1,7 @@
 import { SOURCE_WEBSITE } from "../config";
 import type { WasteCollectionScrappedData } from "../types";
 import { extractNextCollectionDate } from "./extractNextCollectionDate";
-import getTextContent from "./getTextContent";
+import extractWasteServiceGridData from "./extractWasteServiceGridData";
 import launchBrowser from "./launchBrowser";
 
 const getWasteCollectionsData = async (): Promise<WasteCollectionScrappedData[]> => {
@@ -32,20 +32,15 @@ const getWasteCollectionsData = async (): Promise<WasteCollectionScrappedData[]>
   // Wait only for the data we care about
   await page.waitForSelector(".waste-service-name");
 
-  const titles = await page.$$eval(".waste-service-name", getTextContent);
-
-  const details = await page.$$eval(".waste-service-name + div", getTextContent);
+  const items = await page.$$eval(".waste-service-grid", extractWasteServiceGridData);
 
   const wasteCollectionsData: WasteCollectionScrappedData[] = [];
 
-  for (let i = 0; i < titles.length; i++) {
-    const nextCollectionDate = extractNextCollectionDate(details[i]);
+  for (const { title, detail } of items) {
+    const nextCollectionDate = extractNextCollectionDate(detail);
     if (!nextCollectionDate) continue;
 
-    wasteCollectionsData.push({
-      title: titles[i],
-      nextCollectionDate,
-    });
+    wasteCollectionsData.push({ title, nextCollectionDate });
   }
 
   await browser.close();

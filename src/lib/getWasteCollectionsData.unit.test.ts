@@ -30,7 +30,6 @@ describe("getWasteCollectionsData", () => {
       resetRequestHandler() {
         requestHandler = undefined;
       },
-
       mockedPage,
       mockedBrowser,
     };
@@ -49,21 +48,24 @@ describe("getWasteCollectionsData", () => {
   }));
 
   beforeEach(() => {
+    vi.clearAllMocks();
     mockState.resetRequestHandler();
 
     vi.mocked(launchBrowser).mockResolvedValue(mockState.mockedBrowser as any);
 
-    // Default $$eval behaviour: first call titles, second call details
-    mockState.mockedPage.$$eval.mockResolvedValueOnce(["Food Waste", "Mixed Recycling", "Garden Waste"]);
-    mockState.mockedPage.$$eval.mockResolvedValueOnce(["detail-1", "detail-2", "detail-3"]);
+    // ✅ New $$eval shape: array of { title, detail }
+    mockState.mockedPage.$$eval.mockResolvedValueOnce([
+      { title: "Food Waste", detail: "detail-1" },
+      { title: "Mixed Recycling", detail: "detail-2" },
+      { title: "Garden Waste", detail: "detail-3" },
+    ]);
 
-    // Default extract behaviour: all valid (tests can override)
     vi.mocked(extractNextCollectionDate).mockImplementation((detailText) => {
       switch (detailText) {
         case "detail-1":
           return "18 January 2026";
         case "detail-2":
-          return "";
+          return ""; // filtered out
         case "detail-3":
           return "1 February 2026";
         default:
@@ -72,7 +74,7 @@ describe("getWasteCollectionsData", () => {
     });
   });
 
-  it("scrapes titles/details, parses next dates, and returns normalized waste collections", async () => {
+  it("scrapes items, parses next dates, and returns normalized waste collections", async () => {
     const result = await getWasteCollectionsData();
 
     expect(mockState.mockedBrowser.newPage).toHaveBeenCalledTimes(1);
@@ -89,8 +91,9 @@ describe("getWasteCollectionsData", () => {
 
     expect(mockState.mockedPage.waitForSelector).toHaveBeenCalledWith(".waste-service-name");
 
-    expect(mockState.mockedPage.$$eval).toHaveBeenNthCalledWith(1, ".waste-service-name", expect.any(Function));
-    expect(mockState.mockedPage.$$eval).toHaveBeenNthCalledWith(2, ".waste-service-name + div", expect.any(Function));
+    // ✅ New selector + single call
+    expect(mockState.mockedPage.$$eval).toHaveBeenCalledTimes(1);
+    expect(mockState.mockedPage.$$eval).toHaveBeenCalledWith(".waste-service-grid", expect.any(Function));
 
     expect(extractNextCollectionDate).toHaveBeenCalledTimes(3);
 

@@ -70,7 +70,12 @@ describe("runWasteCollectionSync", () => {
     mockedDeleteExistingCalendarEvents.mockResolvedValue();
     mockedGetExistingCalendarEvents.mockResolvedValue([]);
     mockedGetShouldBeUsingMocks.mockReturnValue(null);
-    mockedGetWasteCollectionsData.mockResolvedValue([]);
+    mockedGetWasteCollectionsData.mockResolvedValue([
+      {
+        title: "Food Waste",
+        nextCollectionDate: "18 January 2026",
+      },
+    ]);
     mockedInsertEventsIntoCalendar.mockResolvedValue();
     mockedGoogleCalendar.mockReturnValue(mockedCalendar);
   });
@@ -134,5 +139,10 @@ describe("runWasteCollectionSync", () => {
     const result = await runWasteCollectionSync();
 
     expect(result).toEqual({ created: 2, deleted: 3 });
+  });
+
+  it("should throw an error if no waste collection data is found to process", async () => {
+    mockedGetWasteCollectionsData.mockResolvedValue([]);
+    await expect(runWasteCollectionSync()).rejects.toThrowError("No waste collection data found to process.");
   });
 });

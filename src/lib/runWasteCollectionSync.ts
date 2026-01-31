@@ -12,6 +12,11 @@ const runWasteCollectionSync = async () => {
   const calendar = google.calendar({ version: "v3", auth: getOAuth2Client() });
 
   const wasteCollectionsData = getShouldBeUsingMocks() || (await getWasteCollectionsData());
+
+  if (wasteCollectionsData.length === 0) {
+    throw new Error("No waste collection data found to process.");
+  }
+
   const calendarEvents = createCalendarEvents(wasteCollectionsData);
 
   const existingCalendarEvents = await getExistingCalendarEvents(calendar, calendarEvents);
