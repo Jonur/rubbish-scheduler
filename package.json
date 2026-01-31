@@ -25,6 +25,7 @@
     "test:watch": "vitest",
     "test:ci": "vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=./coverage/junit.xml",
     "test:coverage": "vitest run --coverage",
+    "tree": "tree -a -I \"node_modules|.git|.vercel|dist|build|coverage\" -L 5",
     "typecheck": "tsc -b"
   },
   "engines": {
