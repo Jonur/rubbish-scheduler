@@ -1,4 +1,5 @@
 import { SOURCE_WEBSITE } from "../config";
+import { WEBPAGE_DATA_SCRAPING_TIMEOUT_MS } from "../constants";
 import type { WasteCollectionScrappedData } from "../types";
 import { extractNextCollectionDate } from "./extractNextCollectionDate";
 import extractWasteServiceGridData from "./extractWasteServiceGridData";
@@ -9,8 +10,8 @@ const getWasteCollectionsData = async (): Promise<WasteCollectionScrappedData[]>
   const page = await browser.newPage();
 
   // ⏱ Reduce default timeouts
-  page.setDefaultTimeout(30_000);
-  page.setDefaultNavigationTimeout(30_000);
+  page.setDefaultTimeout(WEBPAGE_DATA_SCRAPING_TIMEOUT_MS);
+  page.setDefaultNavigationTimeout(WEBPAGE_DATA_SCRAPING_TIMEOUT_MS);
 
   // 🚫 Block unnecessary resources (big speed win on serverless)
   await page.setRequestInterception(true);
@@ -24,13 +25,28 @@ const getWasteCollectionsData = async (): Promise<WasteCollectionScrappedData[]>
     }
   });
 
-  // 🚀 Load only what we need
-  await page.goto(SOURCE_WEBSITE, {
-    waitUntil: "domcontentloaded",
+  // Some council/WAF setups return 503 to headless defaults.
+  // These headers make the request look like a normal UK browser.
+  await page.setUserAgent(
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+  );
+  await page.setExtraHTTPHeaders({
+    "Accept-Language": "en-GB,en;q=0.9",
   });
 
+  // 🚀 Load only what we need
+  const response = await page.goto(SOURCE_WEBSITE, {
+    waitUntil: "networkidle2",
+  });
+
+  const status = response?.status();
+  if (!status || status >= 400) {
+    await browser.close();
+    throw new Error(`[scrape] HTTP ${status} at ${page.url()}`);
+  }
+
   // Wait only for the data we care about
-  await page.waitForSelector(".waste-service-name");
+  await page.waitForSelector(".waste-service-name", { timeout: WEBPAGE_DATA_SCRAPING_TIMEOUT_MS });
 
   const items = await page.$$eval(".waste-service-grid", extractWasteServiceGridData);
 

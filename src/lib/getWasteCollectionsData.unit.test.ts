@@ -16,6 +16,9 @@ describe("getWasteCollectionsData", () => {
       goto: vi.fn(),
       waitForSelector: vi.fn(),
       $$eval: vi.fn(),
+      setUserAgent: vi.fn(),
+      setExtraHTTPHeaders: vi.fn(),
+      url: vi.fn(),
     };
 
     const mockedBrowser = {
@@ -53,6 +56,12 @@ describe("getWasteCollectionsData", () => {
 
     vi.mocked(launchBrowser).mockResolvedValue(mockState.mockedBrowser as any);
 
+    mockState.mockedPage.goto.mockResolvedValue({
+      status: () => 200,
+    });
+
+    mockState.mockedPage.url.mockReturnValue("https://example.com/council-waste");
+
     // ✅ New $$eval shape: array of { title, detail }
     mockState.mockedPage.$$eval.mockResolvedValueOnce([
       { title: "Food Waste", detail: "detail-1" },
@@ -85,13 +94,17 @@ describe("getWasteCollectionsData", () => {
     expect(mockState.mockedPage.setRequestInterception).toHaveBeenCalledWith(true);
     expect(mockState.mockedPage.on).toHaveBeenCalledWith("request", expect.any(Function));
 
-    expect(mockState.mockedPage.goto).toHaveBeenCalledWith("https://example.com/council-waste", {
-      waitUntil: "domcontentloaded",
+    expect(mockState.mockedPage.setUserAgent).toHaveBeenCalledTimes(1);
+    expect(mockState.mockedPage.setExtraHTTPHeaders).toHaveBeenCalledWith({
+      "Accept-Language": "en-GB,en;q=0.9",
     });
 
-    expect(mockState.mockedPage.waitForSelector).toHaveBeenCalledWith(".waste-service-name");
+    expect(mockState.mockedPage.goto).toHaveBeenCalledWith("https://example.com/council-waste", {
+      waitUntil: "networkidle2",
+    });
 
-    // ✅ New selector + single call
+    expect(mockState.mockedPage.waitForSelector).toHaveBeenCalledWith(".waste-service-name", { timeout: 30_000 });
+
     expect(mockState.mockedPage.$$eval).toHaveBeenCalledTimes(1);
     expect(mockState.mockedPage.$$eval).toHaveBeenCalledWith(".waste-service-grid", expect.any(Function));
 
@@ -145,5 +158,14 @@ describe("getWasteCollectionsData", () => {
     mockState.requestHandler?.(scriptReq);
     expect(scriptReq.continue).toHaveBeenCalledTimes(1);
     expect(scriptReq.abort).not.toHaveBeenCalled();
+  });
+
+  it("throws when the page responds with a failing status code", async () => {
+    mockState.mockedPage.goto.mockResolvedValueOnce({ status: () => 503 });
+    mockState.mockedPage.url.mockReturnValueOnce("https://example.com/council-waste");
+
+    await expect(getWasteCollectionsData()).rejects.toThrow("[scrape] HTTP 503 at https://example.com/council-waste");
+
+    expect(mockState.mockedBrowser.close).toHaveBeenCalledTimes(1);
   });
 });

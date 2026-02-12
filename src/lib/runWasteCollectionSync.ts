@@ -9,8 +9,6 @@ import getWasteCollectionsData from "./getWasteCollectionsData";
 import insertEventsIntoCalendar from "./insertEventsIntoCalendar";
 
 const runWasteCollectionSync = async () => {
-  const calendar = google.calendar({ version: "v3", auth: getOAuth2Client() });
-
   const wasteCollectionsData = getShouldBeUsingMocks() || (await getWasteCollectionsData());
 
   if (wasteCollectionsData.length === 0) {
@@ -18,6 +16,8 @@ const runWasteCollectionSync = async () => {
   }
 
   const calendarEvents = createCalendarEvents(wasteCollectionsData);
+
+  const calendar = google.calendar({ version: "v3", auth: getOAuth2Client() });
 
   const existingCalendarEvents = await getExistingCalendarEvents(calendar, calendarEvents);
   await deleteExistingCalendarEvents(calendar, existingCalendarEvents);
