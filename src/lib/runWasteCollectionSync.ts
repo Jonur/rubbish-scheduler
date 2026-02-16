@@ -5,11 +5,12 @@ import deleteExistingCalendarEvents from "./deleteExistingCalendarEvents";
 import getExistingCalendarEvents from "./getExistingCalendarEvents";
 import getOAuth2Client from "./getOAuth2Client";
 import getShouldBeUsingMocks from "./getShouldBeUsingMocks";
-import getWasteCollectionsData from "./getWasteCollectionsData";
+import getWasteCollectionsDataFromIcs from "./getWasteCollectionsDataFromIcs";
 import insertEventsIntoCalendar from "./insertEventsIntoCalendar";
+import { ICS_URL } from "../constants";
 
 const runWasteCollectionSync = async () => {
-  const wasteCollectionsData = getShouldBeUsingMocks() || (await getWasteCollectionsData());
+  const wasteCollectionsData = getShouldBeUsingMocks() || (await getWasteCollectionsDataFromIcs(ICS_URL));
 
   if (wasteCollectionsData.length === 0) {
     throw new Error("No waste collection data found to process.");

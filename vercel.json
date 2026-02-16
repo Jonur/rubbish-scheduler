@@ -2,7 +2,6 @@
   "crons": [{ "path": "/api/waste-collection", "schedule": "0 12 * * *" }],
   "functions": {
     "api/waste-collection.ts": {
-      "includeFiles": "node_modules/@sparticuz/chromium/**",
       "maxDuration": 60
     }
   }

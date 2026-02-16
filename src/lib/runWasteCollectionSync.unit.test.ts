@@ -4,7 +4,7 @@ import createCalendarEvents from "./createCalendarEvents";
 import deleteExistingCalendarEvents from "./deleteExistingCalendarEvents";
 import getExistingCalendarEvents from "./getExistingCalendarEvents";
 import getShouldBeUsingMocks from "./getShouldBeUsingMocks";
-import getWasteCollectionsData from "./getWasteCollectionsData";
+import getWasteCollectionsDataFromIcs from "./getWasteCollectionsDataFromIcs";
 import insertEventsIntoCalendar from "./insertEventsIntoCalendar";
 import runWasteCollectionSync from "./runWasteCollectionSync";
 import { createCalendarEvent, existingCalendarEventsMock, puppeteerResponseMock } from "../__mocks__";
@@ -25,14 +25,14 @@ describe("runWasteCollectionSync", () => {
   vi.mock("./deleteExistingCalendarEvents");
   vi.mock("./getExistingCalendarEvents");
   vi.mock("./getShouldBeUsingMocks");
-  vi.mock("./getWasteCollectionsData");
+  vi.mock("./getWasteCollectionsDataFromIcs");
   vi.mock("./insertEventsIntoCalendar");
 
   const mockedCreateCalendarEvents = vi.mocked(createCalendarEvents);
   const mockedDeleteExistingCalendarEvents = vi.mocked(deleteExistingCalendarEvents);
   const mockedGetExistingCalendarEvents = vi.mocked(getExistingCalendarEvents);
   const mockedGetShouldBeUsingMocks = vi.mocked(getShouldBeUsingMocks);
-  const mockedGetWasteCollectionsData = vi.mocked(getWasteCollectionsData);
+  const mockedgetWasteCollectionsDataFromIcs = vi.mocked(getWasteCollectionsDataFromIcs);
   const mockedInsertEventsIntoCalendar = vi.mocked(insertEventsIntoCalendar);
   const mockedGoogle = vi.mocked(google);
   const mockedGoogleCalendar = vi.spyOn(mockedGoogle, "calendar");
@@ -70,7 +70,7 @@ describe("runWasteCollectionSync", () => {
     mockedDeleteExistingCalendarEvents.mockResolvedValue();
     mockedGetExistingCalendarEvents.mockResolvedValue([]);
     mockedGetShouldBeUsingMocks.mockReturnValue(null);
-    mockedGetWasteCollectionsData.mockResolvedValue([
+    mockedgetWasteCollectionsDataFromIcs.mockResolvedValue([
       {
         title: "Food Waste",
         nextCollectionDate: "18 January 2026",
@@ -111,7 +111,7 @@ describe("runWasteCollectionSync", () => {
       },
     ];
 
-    mockedGetWasteCollectionsData.mockResolvedValue(mockedScrappedData);
+    mockedgetWasteCollectionsDataFromIcs.mockResolvedValue(mockedScrappedData);
 
     await runWasteCollectionSync();
 
@@ -142,7 +142,7 @@ describe("runWasteCollectionSync", () => {
   });
 
   it("should throw an error if no waste collection data is found to process", async () => {
-    mockedGetWasteCollectionsData.mockResolvedValue([]);
+    mockedgetWasteCollectionsDataFromIcs.mockResolvedValue([]);
     await expect(runWasteCollectionSync()).rejects.toThrowError("No waste collection data found to process.");
   });
 });

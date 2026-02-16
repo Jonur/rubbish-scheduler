@@ -32,15 +32,14 @@
     "node": ">=24"
   },
   "dependencies": {
-    "@sparticuz/chromium": "^143.0.4",
     "dayjs": "^1.11.19",
     "dotenv": "^17.2.3",
     "googleapis": "^169.0.0",
-    "puppeteer": "^24.34.0",
-    "puppeteer-core": "^24.34.0"
+    "ical": "^0.8.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@types/ical": "^0.8.3",
     "@types/node": "^25.0.6",
     "@typescript-eslint/eslint-plugin": "^8.52.0",
     "@typescript-eslint/parser": "^8.52.0",
