@@ -10,3 +10,14 @@ export type EventsListResponse = Awaited<ReturnType<calendar_v3.Calendar["events
 export class UnauthorizedError extends Error {
   statusCode = 401;
 }
+
+export type IcsVEvent = {
+  type: "VEVENT";
+  summary?: string;
+  start?: Date;
+  end?: Date;
+  uid?: string;
+  description?: string;
+  dtstamp?: Date;
+  params?: unknown[];
+};
