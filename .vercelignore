@@ -1,0 +1,7 @@
+# Keep tests and local tooling out of the deployment. Every .ts file under api/ becomes a
+# serverless function, so a test file there would otherwise be deployed (and type-checked) as one.
+**/*.test.ts
+**/*.spec.ts
+src/test/
+coverage/
+scripts/
