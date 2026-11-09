@@ -1,8 +1,20 @@
 {
-  "crons": [{ "path": "/api/waste-collection", "schedule": "0 12 * * *" }],
+  "crons": [
+    {
+      "path": "/api/waste-collection",
+      "schedule": "0 12 * * *"
+    }
+  ],
   "functions": {
     "api/waste-collection.ts": {
       "maxDuration": 60
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/((?!api/).*)",
+      "destination": "https://jonur.io/404",
+      "permanent": false
+    }
+  ]
 }
