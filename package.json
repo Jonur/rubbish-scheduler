@@ -13,7 +13,6 @@
   },
   "license": "UNLICENCED",
   "author": "Dimitris Damilos<d.k.damilos@gmail.com>",
-  "type": "module",
   "scripts": {
     "start:local": "tsx scripts/waste-collection-local.ts",
     "start:local:mock": "MOCK_SCRAPE=1 tsx scripts/waste-collection-local.ts",
