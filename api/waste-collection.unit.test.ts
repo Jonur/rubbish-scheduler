@@ -6,12 +6,15 @@ import getErrorMessage from "../src/lib/getErrorMessage";
 import getErrorStatusCode from "../src/lib/getErrorStatusCode";
 import runWasteCollectionSync from "../src/lib/runWasteCollectionSync";
 
-describe("api/waste-collection handler", () => {
-  vi.mock("../src/lib/assertCronAuth");
-  vi.mock("../src/lib/runWasteCollectionSync");
-  vi.mock("../src/lib/getErrorStatusCode");
-  vi.mock("../src/lib/getErrorMessage");
+vi.mock("../src/lib/assertCronAuth");
 
+vi.mock("../src/lib/runWasteCollectionSync");
+
+vi.mock("../src/lib/getErrorStatusCode");
+
+vi.mock("../src/lib/getErrorMessage");
+
+describe("api/waste-collection handler", () => {
   const createRes = () => {
     const status = vi.fn();
     const send = vi.fn();

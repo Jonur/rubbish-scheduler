@@ -2,8 +2,9 @@ import { puppeteerResponseMock } from "../__mocks__";
 import * as config from "../config";
 import getShouldBeUsingMocks from "./getShouldBeUsingMocks";
 
+vi.mock("../config");
+
 describe("getShouldBeUsingMocks", () => {
-  vi.mock("../config");
   const mockedConfig = vi.mocked(config);
 
   beforeEach(() => {

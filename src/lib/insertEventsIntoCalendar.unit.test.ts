@@ -5,10 +5,11 @@ import insertEventsIntoCalendar from "./insertEventsIntoCalendar";
 import logger from "./logger";
 import { createMockedCalendar } from "../__mocks__";
 
-describe("insertEventsIntoCalendar", () => {
-  vi.mock("./logger");
-  vi.mock("../config");
+vi.mock("./logger");
 
+vi.mock("../config");
+
+describe("insertEventsIntoCalendar", () => {
   const mockedConfig = vi.mocked(config);
   const mockedLogger = vi.mocked(logger);
 

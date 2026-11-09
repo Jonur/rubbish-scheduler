@@ -3,90 +3,90 @@ import type { calendar_v3 } from "googleapis";
 import { createCalendarEvent, createMockedCalendar } from "../__mocks__";
 import getExistingCalendarEvents from "./getExistingCalendarEvents";
 
-describe("getExistingCalendarEvents", () => {
-  // --- hoisted dayjs mock state + implementation ---
-  const dayjsState = vi.hoisted(() => {
-    /**
-     * We need two behaviours:
-     * 1) dayjs(first/last).tz(...).hour(...).minute(...).second(...).millisecond(...).toISOString()
-     * 2) dayjs(timeMin/timeMax).isValid()
-     *
-     * We'll:
-     * - return a chain object for "dateTime inputs"
-     * - return { isValid } for "timeMin/timeMax inputs"
-     */
-    let timeMinIso = "2025-01-04T08:00:00.000Z";
-    let timeMaxIso = "2025-01-11T18:59:59.999Z";
+// --- hoisted dayjs mock state + implementation ---
+const dayjsState = vi.hoisted(() => {
+  /**
+   * We need two behaviours:
+   * 1) dayjs(first/last).tz(...).hour(...).minute(...).second(...).millisecond(...).toISOString()
+   * 2) dayjs(timeMin/timeMax).isValid()
+   *
+   * We'll:
+   * - return a chain object for "dateTime inputs"
+   * - return { isValid } for "timeMin/timeMax inputs"
+   */
+  let timeMinIso = "2025-01-04T08:00:00.000Z";
+  let timeMaxIso = "2025-01-11T18:59:59.999Z";
 
-    let isValidTimeMin = true;
-    let isValidTimeMax = true;
+  let isValidTimeMin = true;
+  let isValidTimeMax = true;
 
-    const chain = {
-      tz: vi.fn(() => chain),
-      hour: vi.fn(() => chain),
-      minute: vi.fn(() => chain),
-      second: vi.fn(() => chain),
-      millisecond: vi.fn(() => chain),
-      toISOString: vi.fn(() => ""),
-    };
+  const chain = {
+    tz: vi.fn(() => chain),
+    hour: vi.fn(() => chain),
+    minute: vi.fn(() => chain),
+    second: vi.fn(() => chain),
+    millisecond: vi.fn(() => chain),
+    toISOString: vi.fn(() => ""),
+  };
 
-    const dayjsMock = vi.fn((input?: string) => {
-      // Validation calls: dayjs(timeMin).isValid(), dayjs(timeMax).isValid()
-      if (input === timeMinIso) return { isValid: () => isValidTimeMin };
-      if (input === timeMaxIso) return { isValid: () => isValidTimeMax };
+  const dayjsMock = vi.fn((input?: string) => {
+    // Validation calls: dayjs(timeMin).isValid(), dayjs(timeMax).isValid()
+    if (input === timeMinIso) return { isValid: () => isValidTimeMin };
+    if (input === timeMaxIso) return { isValid: () => isValidTimeMax };
 
-      // For building timeMin/timeMax from first/last: return chain
-      // We'll switch what toISOString returns based on whether input equals first/last
-      chain.toISOString.mockImplementation(() => {
-        // default; overridden in tests via setters
-        return input?.includes("2025-01-04") ? timeMinIso : timeMaxIso;
-      });
-
-      return chain;
+    // For building timeMin/timeMax from first/last: return chain
+    // We'll switch what toISOString returns based on whether input equals first/last
+    chain.toISOString.mockImplementation(() => {
+      // default; overridden in tests via setters
+      return input?.includes("2025-01-04") ? timeMinIso : timeMaxIso;
     });
 
-    return {
-      // setters for tests
-      setTimeMinIso(v: string) {
-        timeMinIso = v;
-      },
-      setTimeMaxIso(v: string) {
-        timeMaxIso = v;
-      },
-      setValid(minValid: boolean, maxValid: boolean) {
-        isValidTimeMin = minValid;
-        isValidTimeMax = maxValid;
-      },
-
-      // access for assertions
-      chain,
-      dayjsMock,
-      get timeMinIso() {
-        return timeMinIso;
-      },
-      get timeMaxIso() {
-        return timeMaxIso;
-      },
-    };
+    return chain;
   });
 
-  // mock config so we can assert calls without depending on real env
-  vi.mock("../config", () => ({
-    USER_PREFERENCES: {
-      TIMEZONE: "Europe/London",
-      CALENDAR_ID: "mocked-calendar-id",
+  return {
+    // setters for tests
+    setTimeMinIso(v: string) {
+      timeMinIso = v;
     },
-    DATETIME_OPTIONS: {
-      EVENT_START_TIME: 8,
-      DAY_EOP: 18,
+    setTimeMaxIso(v: string) {
+      timeMaxIso = v;
     },
-  }));
+    setValid(minValid: boolean, maxValid: boolean) {
+      isValidTimeMin = minValid;
+      isValidTimeMax = maxValid;
+    },
 
-  // mock dayjs wrapper
-  vi.mock("./dayjs", () => ({
-    default: dayjsState.dayjsMock,
-  }));
+    // access for assertions
+    chain,
+    dayjsMock,
+    get timeMinIso() {
+      return timeMinIso;
+    },
+    get timeMaxIso() {
+      return timeMaxIso;
+    },
+  };
+});
 
+// mock config so we can assert calls without depending on real env
+vi.mock("../config", () => ({
+  USER_PREFERENCES: {
+    TIMEZONE: "Europe/London",
+    CALENDAR_ID: "mocked-calendar-id",
+  },
+  DATETIME_OPTIONS: {
+    EVENT_START_TIME: 8,
+    DAY_EOP: 18,
+  },
+}));
+
+// mock dayjs wrapper
+vi.mock("./dayjs", () => ({
+  default: dayjsState.dayjsMock,
+}));
+
+describe("getExistingCalendarEvents", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 

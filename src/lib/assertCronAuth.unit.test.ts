@@ -3,8 +3,9 @@ import type { VercelRequest } from "@vercel/node";
 import assertCronAuth from "./assertCronAuth";
 import * as config from "../config";
 
+vi.mock("../config");
+
 describe("assertCronAuth", () => {
-  vi.mock("../config");
   const mockedConfig = vi.mocked(config);
 
   const getMockedRequest = (overrides: Partial<VercelRequest> = {}): VercelRequest =>

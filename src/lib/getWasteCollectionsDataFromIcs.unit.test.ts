@@ -2,13 +2,13 @@ import ical from "ical";
 
 import getWasteCollectionsDataFromIcs from "./getWasteCollectionsDataFromIcs";
 
-describe("getWasteCollectionsDataFromIcs", () => {
-  vi.mock("ical", () => ({
-    default: {
-      parseICS: vi.fn(),
-    },
-  }));
+vi.mock("ical", () => ({
+  default: {
+    parseICS: vi.fn(),
+  },
+}));
 
+describe("getWasteCollectionsDataFromIcs", () => {
   const mockFetch = vi.fn();
 
   beforeEach(() => {

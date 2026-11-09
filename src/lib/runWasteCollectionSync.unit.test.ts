@@ -10,24 +10,31 @@ import runWasteCollectionSync from "./runWasteCollectionSync";
 import { createCalendarEvent, existingCalendarEventsMock, puppeteerResponseMock } from "../__mocks__";
 import type { WasteCollectionScrappedData } from "../types";
 
-describe("runWasteCollectionSync", () => {
-  vi.mock("googleapis", async (importOriginal) => ({
-    ...(await importOriginal()),
-    google: {
-      auth: vi.fn(),
-      calendar: vi.fn(),
-    },
-  }));
-  vi.mock("./getOAuth2Client", () => ({
-    default: vi.fn(() => ({ username: "Jonur" }) as unknown as Auth.JWT),
-  }));
-  vi.mock("./createCalendarEvents");
-  vi.mock("./deleteExistingCalendarEvents");
-  vi.mock("./getExistingCalendarEvents");
-  vi.mock("./getShouldBeUsingMocks");
-  vi.mock("./getWasteCollectionsDataFromIcs");
-  vi.mock("./insertEventsIntoCalendar");
+vi.mock("googleapis", async (importOriginal) => ({
+  ...(await importOriginal()),
+  google: {
+    auth: vi.fn(),
+    calendar: vi.fn(),
+  },
+}));
 
+vi.mock("./getOAuth2Client", () => ({
+  default: vi.fn(() => ({ username: "Jonur" }) as unknown as Auth.JWT),
+}));
+
+vi.mock("./createCalendarEvents");
+
+vi.mock("./deleteExistingCalendarEvents");
+
+vi.mock("./getExistingCalendarEvents");
+
+vi.mock("./getShouldBeUsingMocks");
+
+vi.mock("./getWasteCollectionsDataFromIcs");
+
+vi.mock("./insertEventsIntoCalendar");
+
+describe("runWasteCollectionSync", () => {
   const mockedCreateCalendarEvents = vi.mocked(createCalendarEvents);
   const mockedDeleteExistingCalendarEvents = vi.mocked(deleteExistingCalendarEvents);
   const mockedGetExistingCalendarEvents = vi.mocked(getExistingCalendarEvents);
